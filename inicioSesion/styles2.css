@@ -29,3 +29,25 @@ body {
     padding: 10px; 
     box-shadow: 0 4px 8px; 
 }
+
+.menu-item:hover {
+    font-size: 24px;
+    border-color: #0099ff; 
+    transform: scale(1.1); 
+}
+
+.primer-ano {
+    color: rgb(148, 1, 148);
+}
+
+.segundo-ano {
+    color: green;
+}
+
+.consultas-administrativas {
+    color: red;
+}
+
+.novedades{
+    color: rgb(45, 1, 148);
+}
