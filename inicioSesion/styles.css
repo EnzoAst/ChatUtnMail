@@ -7,3 +7,15 @@ body {
     justify-content: center; 
     align-items: center; 
 }
+.error-message {
+    display: none; 
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
