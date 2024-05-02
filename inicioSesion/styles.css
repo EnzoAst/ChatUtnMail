@@ -19,3 +19,22 @@ body {
     align-items: center;
     height: 100vh; 
 }
+.form-container {
+    width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+img.svg {
+    width: 180px;
+    height: auto;
+}
+.image-container {
+    text-align: center; 
+    margin-bottom: 50px; 
+}
+
+.botones {
+    margin-top: 10px;
+}
