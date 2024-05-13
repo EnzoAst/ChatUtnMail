@@ -14,3 +14,36 @@
     <title>Login UTN</title>
   </head>
   <body>
+    <div id="loader"></div>
+    <div class="popup" id="legajo-message"></div>
+    <div class="centered-form">
+      <div class="form-container">
+        <form>
+          <div class="image-container">
+            <img src="./UTN_logo.jpg" class="svg" />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Ingrese su DNI</label>
+            <input
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Ingrese su DNI"
+            />
+            <div id="error-message-legajo" class="error-message">
+              El DNI ingresado es incorrecto.
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary mt-1" onclick="mostrarLegajo()">Ingresar</button>
+
+          <a
+            href="https://chat-bot-utn.vercel.app/"
+            class="btn btn-danger mt-1"
+            >volver</a
+          >
+        </form>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
