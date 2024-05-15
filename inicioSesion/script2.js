@@ -18,5 +18,35 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.removeItem('legajo');
         localStorage.removeItem('nombre');
         window.location.href = "https://chat-bot-utn.vercel.app";
-    }
-);
+    });
+
+    document.querySelector('.novedades button').addEventListener('click', function() {
+        if(!legajo){
+            window.location.href = "https://chat-bot-utn.vercel.app";
+        }
+        else{
+            window.location.href = "materias1.html";
+        }
+        
+    });
+    document.querySelector('.novedades2 button').addEventListener('click', function() {
+        if(!legajo){
+            window.location.href = "https://chat-bot-utn.vercel.app/";
+        }
+        else{
+            window.location.href = "chatbot/materias2.html";
+        }
+        
+    });
+    document.querySelector('.novedades3 button').addEventListener('click', function() {
+        if(!legajo){
+            window.location.href = "https://chat-bot-utn.vercel.app/";
+        }
+        else{
+            window.location.href = "novedades.html";
+        }
+        
+    });
+
+    console.log(localStorage);
+});
