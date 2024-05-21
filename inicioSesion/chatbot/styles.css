@@ -7,6 +7,17 @@ body {
     justify-content: center; 
     align-items: center; 
 }
+p {
+      margin: 0.2em 0; 
+}
+#responseContainer {
+    max-height: 400px;
+    overflow-y: auto; 
+    margin-bottom: 10px;
+  }
+  .response{
+    margin-bottom: 10px;
+  }
 #loader {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
@@ -38,13 +49,27 @@ body {
     align-items: center;
     height: 100vh; 
 }
+@keyframes gradient-wave {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 20%;
+    }
+}
 
 .form-container {
     width: 400px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background: linear-gradient(270deg, #01014e, hsl(235, 96%, 19%), #180c7c);
+    background-size: 600% 600%;
+    animation: gradient-wave 10s ease infinite; 
+    color: white;   
 }
 img.svg {
     width: 180px;
@@ -100,7 +125,6 @@ img.svg {
     text-align: center;
 }
 
-/* Estilo para el botón de cerrar */
 .close {
     color: #aaa;
     float: right;

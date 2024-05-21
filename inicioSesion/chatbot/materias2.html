@@ -2,12 +2,261 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="../imagenes/utn-2.svg" type="image/png" />
+    <title>Login UTN</title>
+  </head>
+  <body>
+    <div id="loader"></div>
+
+    <div id="response"></div>
+    <div class="centered-form">
+      <div class="form-container">
+
+          <div class="buttons-container text-center">
+        <button id="showUsernameBtn" class="btn btn-primary">
+            <img id="userImage" src="" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 10px;">
+            Mostrar Usuario
+        </button>
+        <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+    </div>
+        <br />
+        <p id="option0">0-hablar con asistente</p>
+    <p id="option1">1-Ver cuota</p>
+    <p id="option2">2-Ver correo docente</p>
+    <p id="option3">3-Ver correo institucional</p>
+    <p id="option4">4-horario de cursada</p>
+    <p id="option5">5-Ver calendario de clase</p>
+    <p id="option6">6-Ver chatbot</p>
+    <p id="option7">7-mapa</p>
+        <form id="messageForm">
+          <div class="search-container">
+            <div style="display: flex">
+              <input
+                type="number"
+                id="messageInput"
+                placeholder="Ingrese un número"
+              />
+
+              <button type="submit" id="sendButton">Enviar</button>
+              <button type="button" id="clearChat">Borrar</button>
+            </div>
+          </div>
+        </form>
+        <br />
+
+        <div id="responseContainer"></div>
+        <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ubicación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- Google Maps iframe -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3350.447308647422!2d-68.33032848481943!3d-34.61771798046137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e096d637a6a07%3A0x2b4e2a1a9df1a7e6!2sAv.%20Gral.%20J.%20J.%20de%20Urquiza%20314%2C%20M5600%20San%20Rafael%2C%20Mendoza!5e0!3m2!1sen!2sar!4v1633025263438!5m2!1sen!2sar" width="450" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="importmap">
       {
         "imports": {
           "@google/generative-ai": "https://esm.run/@google/generative-ai"
         }
       }
+    </script>
+    <script type="module">
+      
+      import { GoogleGenerativeAI } from "@google/generative-ai";
+
+      const API_KEY = "AIzaSyAh_7uGwOvSX-S8_r0J1qda07iaHY5v7Ac";
+
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-pro-latest",
+      });
+
+      let chatbotActivated = false;
+      let whasapp="https://api.whatsapp.com/send?phone=1125987142&text=me%20interesa%20saber%20mas%20sobre%20la%20carrera";
+
+      document
+        .getElementById("messageForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const input = document.getElementById("messageInput").value;
+
+          if (!chatbotActivated) {
+            const inputNumber = parseInt(input);
+
+            if (inputNumber === 6) {
+              chatbotActivated = true;
+              for (let i = 0; i <= 5; i++) {
+              document.getElementById(`option${i}`).style.display = 'none';
+              if(i===5){
+                document.getElementById(`option${i+2}`).style.display = 'none';
+              }
+            }
+
+              document.getElementById("messageInput").type = "text";
+              document.getElementById("messageInput").placeholder =
+                "Ingrese su mensaje";
+              document.getElementById("messageInput").value = "";
+              document.getElementById("responseContainer").innerHTML =
+                "<div>Chatbot activado</div>"+
+                "<div>¿Cuánto cuesta la cuota?</div>" +
+    "<div>¿Cuántos años dura la tecnicatura?</div>" +
+    "<div>¿Las clases son presenciales?</div>" +
+    "<div>¿La carrera es gratuita?</div>" +
+    "<div>¿Cuántas materias son?</div>" +
+    "<div>¿Cuántas horas demanda la carrera por semana?</div>";
+
+              document.getElementById("clearChat").textContent = "Borrar Chat";
+            } else if (inputNumber >= 0 && inputNumber <= 5 || inputNumber === 7) {
+              const messages = {
+                0: `<div>apreta aqui para comunicarte con el asistente</div> <a href="${whasapp}" target="_blank">WhatsApp</a>`,
+                1: "<div>cuota: $25,150 se pagan 24 cuotas</div>",
+                2: "<div>Ver mail de docentes:</div><div>-ariel betancud abetancud@frsr.utn.edu.ar</div><div>- natalia lucero nattylucero777@gmail.com</div><div>- osvaldo giordanini ogiordanini@yahoo.com.ar</div>",
+                3: "<div>Ver mail institucional:</div><div>- lucas pietrelli lpietrelli@frsr.utn.edu.ar</div><div>- ingresos ingresos@frsr.utn.edu.ar</div><div>-jorge jorgeoscar.dominguez@gmail.com</div>",
+                4: "<div>Horario de clases: Lunes a Viernes de 18:00 a 23:00</div>",
+                };
+              if (inputNumber === 5) {
+                Swal.fire({
+                  title: 'Calendario académico',
+                   html: "<img src='../imagenes/Calendario.png' alt='Calendario académico'  style='max-width: 100%; height: auto;'/>",
+                    confirmButtonText: 'Cerrar'
+              });
+              } 
+              if(inputNumber === 7){
+    Swal.fire({
+        title: 'Ubicación',
+        html: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3350.447308647422!2d-68.33032848481943!3d-34.61771798046137!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x967e096d637a6a07%3A0x2b4e2a1a9df1a7e6!2sAv.%20Gral.%20J.%20J.%20de%20Urquiza%20314%2C%20M5600%20San%20Rafael%2C%20Mendoza!5e0!3m2!1sen!2sar!4v1633025263438!5m2!1sen!2sar" width="450" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+        width: 500,
+        padding: '3em',
+        
+        
+    })
+}
+              else {
+              document.getElementById("responseContainer").innerHTML =
+                messages[inputNumber];
+              }
+              document.getElementById("clearChat").textContent = "Borrar";
+            
+            }
+            else {
+              document.getElementById("responseContainer").innerHTML =
+                "<div>Número no válido</div>";
+            }
+          } else {
+            if (
+              input.toLowerCase().includes("precio") ||
+              input.toLowerCase().includes("cuota")
+            ) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> 24 cuotas de $25,150</div>";
+            } else if (input.toLowerCase().includes("mail docentes")) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "<div>Ver mail de docentes:</div><div>-ariel betancud abetancud@frsr.utn.edu.ar</div><div>- natalia lucero nattylucero777@gmail.com</div><div>- osvaldo giordanini ogiordanini@yahoo.com.ar</div>";
+            } else if (input.toLowerCase().includes("mail institucional")) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "<div>Ver mail institucional:</div><div>- lucas pietrelli lpietrelli@frsr.utn.edu.ar</div><div>- ingresos ingresos@frsr.utn.edu.ar</div><div>-jorge jorgeoscar.dominguez@gmail.com</div>";
+            } else if (
+              input.toLowerCase().includes("duda") ||
+              input.toLowerCase().includes("consulta") ||
+              input.toLowerCase().includes("queja")
+            ) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> Para ese caso debes usar el servicio de correo de la pestaña anterior</div>";
+            } else if (
+              input.toLowerCase().includes("años dura la tecnicatura")
+            ) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> 2 años compuestos de dos cuatrimestres</div>";
+            } else if (
+              input.toLowerCase().includes("las clases son presenciales")
+            ) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> Las clases son virtuales pero para los de San Rafael son presenciales una vez por mes o por semana</div>";
+            } else if (input.toLowerCase().includes("la carrera es gratuita")) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> No, es arancelada</div>";
+            } else if (input.toLowerCase().includes("materias") || input.toLowerCase().includes("cuantas")) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> 21 materias</div>";
+            } else if (
+              input
+                .toLowerCase()
+                .includes("horas demanda") || input.toLowerCase().includes("semana")
+            ) {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> Mínimo 34 horas si vienen bien sino 50 horas</div>";
+            } else {
+              document.getElementById("responseContainer").innerHTML +=
+                "<div><strong>Usuario:</strong> " +
+                input +
+                "</div><div><strong>Chatbot:</strong> " +
+                model.generate(input) +
+                "</div>";
+            }
+          }
+
+          document.getElementById("messageInput").value = "";
+        });
+
+      document
+        .getElementById("clearChat")
+        .addEventListener("click", function () {
+          for (let i = 0; i <= 5; i++) {
+            document.getElementById(`option${i}`).style.display = 'block';
+            if(i===5){
+                document.getElementById(`option${i+2}`).style.display = 'block';
+              }
+          }
+          document.getElementById("responseContainer").innerHTML = "";
+
+          chatbotActivated = false;
+
+          document.getElementById("messageInput").type = "number";
+          document.getElementById("messageInput").placeholder =
+            "Ingrese un número";
+          if (chatbotActivated) {
+            document.getElementById("clearChat").textContent = "Borrar Chat";
+          } else {
+            document.getElementById("clearChat").textContent = "Borrar";
+          }
+        });
     </script>
     <script src="script.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
